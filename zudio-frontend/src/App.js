@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://zudio-2aq3.onrender.com/";
 
 function App() {
     const [cartItems, setCartItems] = useState([]);
