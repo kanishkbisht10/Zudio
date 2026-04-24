@@ -145,6 +145,7 @@ const ProductsPage = ({ refreshCartCount }) => {
     }
 
     setFilteredProducts(filtered);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedCategory, minPrice, maxPrice, products]);
 
   const handleCategoryClick = (category) => {
