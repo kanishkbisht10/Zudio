@@ -1,119 +1,61 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../components/Logo";
+import { auth } from "../firebase";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import toast from "react-hot-toast";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
     if (email && password) {
-      alert("Login Successful!");
-      navigate("/");
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        toast.success("Login Successful!");
+        navigate("/");
+      } catch (err) {
+        toast.error("Failed to login. Please check your credentials.");
+      }
     } else {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
     }
   };
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
-    }}>
-      <div style={{
-        background: "white",
-        padding: "40px",
-        borderRadius: "10px",
-        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
-        width: "100%",
-        maxWidth: "400px"
-      }}>
-        <h1 style={{
-          textAlign: "center",
-          color: "#333",
-          marginBottom: "30px",
-          fontSize: "28px"
-        }}>Login</h1>
-
+    <div className="auth-container">
+      <div className="auth-card glass-dark">
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+          <Logo width="100" color="white" />
+        </div>
+        <h1>Welcome Back</h1>
         <form onSubmit={handleLogin}>
           <input
             type="email"
-            placeholder="Enter Email"
+            placeholder="Email Address"
+            className="input-premium"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{
-              display: "block",
-              width: "100%",
-              marginBottom: "15px",
-              padding: "12px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              fontSize: "14px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s"
-            }}
-            onFocus={(e) => e.target.style.borderColor = "#667eea"}
-            onBlur={(e) => e.target.style.borderColor = "#ddd"}
+            style={{ marginBottom: "15px" }}
           />
-
           <input
             type="password"
-            placeholder="Enter Password"
+            placeholder="Password"
+            className="input-premium"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              display: "block",
-              width: "100%",
-              marginBottom: "20px",
-              padding: "12px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              fontSize: "14px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s"
-            }}
-            onFocus={(e) => e.target.style.borderColor = "#667eea"}
-            onBlur={(e) => e.target.style.borderColor = "#ddd"}
+            style={{ marginBottom: "25px" }}
           />
-
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "12px",
-              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              transition: "transform 0.2s",
-              marginBottom: "15px"
-            }}
-            onMouseOver={(e) => e.target.style.transform = "scale(1.02)"}
-            onMouseOut={(e) => e.target.style.transform = "scale(1)"}
-          >
-            Login
+          <button type="submit" className="btn-primary" style={{ width: "100%", padding: "14px", marginBottom: "20px", backgroundColor: "white", color: "black" }}>
+            Sign In
           </button>
-
-          <p style={{ textAlign: "center", color: "#666", marginTop: "20px" }}>
+          <p style={{ color: "#aaa" }}>
             Don't have an account?{" "}
-            <span
-              style={{
-                color: "#667eea",
-                cursor: "pointer",
-                fontWeight: "bold",
-                textDecoration: "underline"
-              }}
-              onClick={() => navigate("/register")}
-            >
-              Register
+            <span className="auth-link" onClick={() => navigate("/register")}>
+              Create one
             </span>
           </p>
         </form>

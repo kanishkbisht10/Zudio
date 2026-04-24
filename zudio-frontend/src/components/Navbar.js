@@ -1,28 +1,32 @@
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 function Navbar(props) {
   return (
-    <nav style={{
-      padding: "15px",
-      backgroundColor: "black",
-      color: "white",
+    <nav className="glass" style={{
+      padding: "15px 40px",
       display: "flex",
-      justifyContent: "space-between"
+      justifyContent: "space-between",
+      alignItems: "center",
+      position: "sticky",
+      top: 0,
+      zIndex: 100
     }}>
-      <h2>ZUDIO</h2>
-      <div>
-        <Link to="/login" style={{ color: "white", marginRight: "15px" }}>
+      <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
+        <Logo width="120" color="black" />
+      </Link>
+      
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Link to="/login" className="nav-link">
           Login
         </Link>
-        <Link to="/" style={{marginRight: "15px", color: "white", textDecoration: "none"}}>
-          Home
+        <Link to="/logout" className="nav-link">
+          Logout
         </Link>
-
-        <Link to="/" style={{marginRight: "15px", color: "white", textDecoration: "none"}}>
+        <Link to="/" className="nav-link">
           Products
         </Link>
-
-        <Link to="/cart" style={{color: "white", textDecoration: "none"}}>
+        <Link to="/cart" className="nav-link" style={{ marginRight: 0 }}>
           Cart ({props.cartCount})
         </Link>
       </div>

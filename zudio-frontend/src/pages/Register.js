@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Logo from "../components/Logo";
+import { auth } from "../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import toast from "react-hot-toast";
 
 function Register() {
   const [name, setName] = useState("");
@@ -7,134 +11,60 @@ function Register() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-
     if (name && email && password) {
-      alert("Registration Successful!");
-      navigate("/login");
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        toast.success("Registration Successful!");
+        navigate("/login");
+      } catch (err) {
+        toast.error(err.message);
+      }
     } else {
-      alert("Please fill all fields");
+      toast.error("Please fill all fields");
     }
   };
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      minHeight: "100vh",
-      background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)"
-    }}>
-      <div style={{
-        background: "white",
-        padding: "40px",
-        borderRadius: "10px",
-        boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2)",
-        width: "100%",
-        maxWidth: "400px"
-      }}>
-        <h1 style={{
-          textAlign: "center",
-          color: "#333",
-          marginBottom: "30px",
-          fontSize: "28px"
-        }}>Sign Up</h1>
-
+    <div className="auth-container">
+      <div className="auth-card glass-dark">
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+          <Logo width="100" color="white" />
+        </div>
+        <h1>Create Account</h1>
         <form onSubmit={handleRegister}>
           <input
             type="text"
-            placeholder="Enter Full Name"
+            placeholder="Full Name"
+            className="input-premium"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            style={{
-              display: "block",
-              width: "100%",
-              marginBottom: "15px",
-              padding: "12px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              fontSize: "14px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s"
-            }}
-            onFocus={(e) => e.target.style.borderColor = "#f5576c"}
-            onBlur={(e) => e.target.style.borderColor = "#ddd"}
+            style={{ marginBottom: "15px" }}
           />
-
           <input
             type="email"
-            placeholder="Enter Email"
+            placeholder="Email Address"
+            className="input-premium"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            style={{
-              display: "block",
-              width: "100%",
-              marginBottom: "15px",
-              padding: "12px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              fontSize: "14px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s"
-            }}
-            onFocus={(e) => e.target.style.borderColor = "#f5576c"}
-            onBlur={(e) => e.target.style.borderColor = "#ddd"}
+            style={{ marginBottom: "15px" }}
           />
-
           <input
             type="password"
-            placeholder="Enter Password"
+            placeholder="Password"
+            className="input-premium"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            style={{
-              display: "block",
-              width: "100%",
-              marginBottom: "20px",
-              padding: "12px",
-              border: "1px solid #ddd",
-              borderRadius: "5px",
-              fontSize: "14px",
-              boxSizing: "border-box",
-              transition: "border-color 0.3s"
-            }}
-            onFocus={(e) => e.target.style.borderColor = "#f5576c"}
-            onBlur={(e) => e.target.style.borderColor = "#ddd"}
+            style={{ marginBottom: "25px" }}
           />
-
-          <button
-            type="submit"
-            style={{
-              width: "100%",
-              padding: "12px",
-              background: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              fontSize: "16px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              transition: "transform 0.2s",
-              marginBottom: "15px"
-            }}
-            onMouseOver={(e) => e.target.style.transform = "scale(1.02)"}
-            onMouseOut={(e) => e.target.style.transform = "scale(1)"}
-          >
-            Sign Up
+          <button type="submit" className="btn-primary" style={{ width: "100%", padding: "14px", marginBottom: "20px", backgroundColor: "white", color: "black" }}>
+            Register
           </button>
-
-          <p style={{ textAlign: "center", color: "#666", marginTop: "20px" }}>
-            Already have an account?{" "}
-            <span
-              style={{
-                color: "#f5576c",
-                cursor: "pointer",
-                fontWeight: "bold",
-                textDecoration: "underline"
-              }}
-              onClick={() => navigate("/login")}
-            >
-              Login
+          <p style={{ color: "#aaa" }}>
+            Already a member?{" "}
+            <span className="auth-link" onClick={() => navigate("/login")}>
+              Sign In
             </span>
           </p>
         </form>
